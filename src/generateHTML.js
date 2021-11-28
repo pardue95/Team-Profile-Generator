@@ -1,0 +1,142 @@
+const generateManager = function (manager) {
+    return `
+    <div class="card">
+    <header class="card-header">
+    <p class="card-header-title">
+    ${manager.name}
+    </p>
+    </header>
+
+    <div class="card-content">
+      <div class="content">
+        <p class="id">ID: ${manager.id}</p>
+        <p class="email">Email: <a href="mailto:${manager.email}">${manager.email}</a></p>
+        <p class="office">Office Number: ${manager.officeNumber}</p>
+      </div>
+    </div>
+  </div>
+    `;
+
+}
+
+//Create Engineer card
+const generateEngineer = function (engineer) {
+    return `
+    <div class="card">
+    <header class="card-header">
+    <p class="card-header-title">
+    ${engineer.name}
+    </p>
+    </header>
+
+    <div class="card-content">
+      <div class="content">
+        <p class="id">ID: ${engineer.id}</p>
+        <p class="email">Email: <a href="mailto:${engineer.email}">${engineer.email}</a></p>
+        <p class="github">Github: <a href="https://github.com/${engineer.github}">${engineer.github}</a></p>
+      </div>
+    </div>
+  </div>
+    `;
+}
+//Create intern card
+const generateIntern = function (intern) {
+    return `
+    <div class="columns>
+    <div class="card">
+    <header class="card-header">
+    <p class="card-header-title">
+    ${intern.name}
+    </p>
+    </header>
+
+    <div class="card-content">
+      <div class="content">
+        <p class="id">ID: ${intern.id}</p>
+        <p class="email">Email:<a href="mailto:${intern.email}">${intern.email}</a></p>
+        <p class="school">School: ${intern.school}</p>
+      </div>
+    </div>
+  </div>
+  </div>
+    `;
+}
+
+//Push array to page 
+generateHTML = (data) => {
+
+//Array for cards 
+    pageArray = []; 
+
+    for (let i = 0; i < data.length; i++) {
+        const employee = data[i];
+        const role = employee.getRole(); 
+
+
+//Call manager function
+        if (role === 'Manager') {
+            const managerCard = generateManager(employee);
+
+            pageArray.push(managerCard);
+        }
+
+//Call engineer function
+        if (role === 'Engineer') {
+            const engineerCard = generateEngineer(employee);
+
+            pageArray.push(engineerCard);
+        }
+
+//Call intern function 
+        if (role === 'Intern') {
+            const internCard = generateIntern(employee);
+
+            pageArray.push(internCard);
+        }
+        
+    }
+
+//Joining strings 
+    const employeeCards = pageArray.join('')
+//Return to generated page
+    const generateTeam = generateTeamPage(employeeCards); 
+    return generateTeam;
+
+}
+
+// generate html page 
+const generateTeamPage = function (employeeCards) {   
+    return`
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Team Profile</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <header class="has-text-centered">
+            <nav >
+                <span class="has-text-centered" id="navbar-text">Team Profile</span>
+            </nav>
+        </header>
+        <main>
+            <div class="column">
+                <div class="row justify-content-center" id="team-cards">
+                    <!--Team Cards-->
+                    ${employeeCards}
+                </div>
+            </div>
+        </main>
+        
+    </body>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+
+    </html>
+  `;
+  }
+  
+  // export to index
+  module.exports = generateHTML; 
